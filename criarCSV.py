@@ -8,11 +8,11 @@ from Questao import Pergunta, Resposta
 
 def criarCSVPerguntas(perguntas):
     # 1. cria o arquivo
-    f = open('perguntas_Pt_Stackoverflow.csv', 'w', newline='', encoding='utf-8')
+    header = ["id_pergunta", "titulo", "pergunta", "resposta1", "score1","resposta2", "score2", "tags"]
+    f = open('perguntas_Pt_Stackoverflow.csv', 'a', header= header,  newline='', encoding='utf-8')
 
     # 2. cria o objeto de gravação
     w = csv.writer(f)
-    w.writerow(["id_pergunta", "titulo", "pergunta", "resposta1", "score1","resposta2", "score2", "tags"])
     # 3. grava as linhas
     for p in perguntas:
         respostaAceita = None
@@ -32,8 +32,7 @@ def criarCSVPerguntas(perguntas):
             tags.append(t)
         w.writerow([str(p.id), p.titulo, p.pergunta,respostaAceita.resposta, str(respostaAceita.score), resposta2, str(resposta2.score),  tags])
 
-    # Recomendado: feche o arquivo
-    #w.close() 
+   
 
 #if __name__ == "__main__":
 #   criarCSVPerguntas()

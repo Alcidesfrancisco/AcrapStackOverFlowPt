@@ -1,7 +1,5 @@
 class Resposta:
 
-    def __init__(self):
-        pass
     def __init__(self, resposta, score, aceita):
         self.resposta = resposta
         self.score = score
