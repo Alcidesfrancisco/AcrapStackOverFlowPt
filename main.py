@@ -1,10 +1,14 @@
 from asyncio.windows_events import NULL
+import time
+from urllib.error import HTTPError
 from bs4 import BeautifulSoup
 import urllib.request
 from Questao  import Resposta
 from Questao import Pergunta
 import criarCSV
 import adicionarAoCSV
+import criarCSVListadeLinks
+
 
 _DOMINIO = 'https://pt.stackoverflow.com/'
 listaDepaginas = []
@@ -20,6 +24,8 @@ def getLinks(numeroDaPagina):
     itens = questions.findAll('div', attrs = {'class':'s-post-summary js-post-summary'})
     for i in itens:
         listaDepaginas.append(i.find('a').get('href'))
+    
+    #criarCSVListadeLinks.criarCSVPerguntas(listaDepaginas)
           
 #Método que visita a página da pergunta e preenche o objeto Pergunta e Resposta do módulo Questão
 #Adiciona a pergunta a uma lista ou adiciona a pergunta diretamente ao CSV
@@ -72,17 +78,27 @@ if __name__ == "__main__":
     while numeroDaPagina < 181:
     
         
-        getLinks(numeroDaPagina)
-        print (numeroDaPagina)
-        numeroDaPagina = numeroDaPagina + 1
-        
-            
+        if not criarCSVListadeLinks.csvExiste(): 
+            getLinks(numeroDaPagina)
+            print (numeroDaPagina)
+            numeroDaPagina = numeroDaPagina + 1
+        else:
+            listaDepaginas = criarCSVListadeLinks.lerCSV()
+            print (listaDepaginas)
+
     i = 1
     for pagina in listaDepaginas:
         #teste
         #if i == 10 : break
-        vistarPagina(pagina)
-        print(i +1)
-        i = i + 1
+        try:
+            vistarPagina(pagina)
+            print(i +1)
+            i = i + 1
+        except HTTPError as error:
+            print("Dormindo")
+            time.sleep(5000)
+            
+
+
     #Para adicionar todas as perguntas as CSV
     #criarCSV.criarCSVPerguntas(listaDePerguntas)
