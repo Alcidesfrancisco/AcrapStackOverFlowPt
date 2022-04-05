@@ -17,8 +17,12 @@ listaDePerguntas = []
 #Método que faz o scrap na lista de pergunta e retorna os links de todas as perguntas
 def getLinks(numeroDaPagina):
     paginaHtmlComListaDePerguntas = ('https://pt.stackoverflow.com/questions/tagged/python?tab=newest&page='+ str(numeroDaPagina) +'&pagesize=50')
-    page = urllib.request.urlopen(paginaHtmlComListaDePerguntas)
-
+    try:
+        page = urllib.request.urlopen(paginaHtmlComListaDePerguntas)
+    except HTTPError:
+        print("Dormindo")
+        time.sleep(1800)
+        page = urllib.request.urlopen(paginaHtmlComListaDePerguntas)
     soup = BeautifulSoup(page, "html.parser")
     questions = soup.find("div", id = 'questions')
     itens = questions.findAll('div', attrs = {'class':'s-post-summary js-post-summary'})
@@ -30,7 +34,12 @@ def getLinks(numeroDaPagina):
 #Método que visita a página da pergunta e preenche o objeto Pergunta e Resposta do módulo Questão
 #Adiciona a pergunta a uma lista ou adiciona a pergunta diretamente ao CSV
 def vistarPagina(link):
-    page = urllib.request.urlopen(_DOMINIO + link)
+    try:
+        page = urllib.request.urlopen(_DOMINIO + link)
+    except HTTPError:
+        print("Dormindo")
+        time.sleep(1800)
+        page = urllib.request.urlopen(_DOMINIO + link)
     #teste para apenas uma página
     #page = urllib.request.urlopen('https://pt.stackoverflow.com/questions/542643/como-realizar-o-c%c3%a1lculo-de-amplitude-m%c3%b3vel-em-listas')
     id = link.split('/')[2]
@@ -75,8 +84,7 @@ def vistarPagina(link):
 #Método main
 if __name__ == "__main__":
     numeroDaPagina = 1
-    while numeroDaPagina < 181:
-    
+    while numeroDaPagina < 181:    
         
         if not criarCSVListadeLinks.csvExiste(): 
             getLinks(numeroDaPagina)
@@ -96,7 +104,8 @@ if __name__ == "__main__":
             i = i + 1
         except HTTPError as error:
             print("Dormindo")
-            time.sleep(5000)
+            time.sleep(1800)
+            vistarPagina(pagina)
             
 
 
