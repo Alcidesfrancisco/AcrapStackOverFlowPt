@@ -8,7 +8,7 @@ from Questao import Pergunta, Resposta
 
 def criarCSVPerguntas(pergunta):
     #verifica se o arquivo já existe
-    arquivo_ja_existia = Path('perguntas_Pt_Stackoverflow.csv').is_file()
+    arquivo_ja_existia = Path('perguntas_Pt_Stackoverflow1.csv').is_file()
     #cria o arquivo
     header = ["id_pergunta", "titulo", "pergunta", "resposta1", "score1","resposta2", "score2", "tags"]
     f = open('perguntas_Pt_Stackoverflow.csv', 'a',  newline='', encoding='utf-8')
@@ -35,7 +35,7 @@ def criarCSVPerguntas(pergunta):
 
 
     if not arquivo_ja_existia: w.writeheader()
-    w.writerow({"id_pergunta": str(pergunta.id),  "titulo": pergunta.titulo, "pergunta": pergunta.pergunta,"resposta1": respostaAceita.resposta, "score1": str(respostaAceita.score), "resposta2": resposta2, "score2": str(resposta2.score),  "tags": tags})
+    w.writerow({"id_pergunta": pergunta.id,  "titulo": pergunta.titulo, "pergunta": pergunta.pergunta,"resposta1": respostaAceita.resposta, "score1": respostaAceita.score, "resposta2": resposta2, "score2": str(resposta2.score),  "tags": tags})
 
    
 
