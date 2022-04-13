@@ -83,7 +83,7 @@ def vistarPagina(link):
 
 #Método main
 if __name__ == "__main__":
-    numeroDaPagina = 1
+    numeroDaPagina = 126
     while numeroDaPagina < 181:    
         
         if not criarCSVListadeLinks.csvExiste(): 
